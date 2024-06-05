@@ -8,8 +8,8 @@
     <title>sanctum auth</title>
 </head>
 <body>
-    <h1 class="text-3xl font-bold underline">
-        Hello world!
-      </h1>
+    <main>
+        <div id="app"></div>
+    </main>
 </body>
 </html>
