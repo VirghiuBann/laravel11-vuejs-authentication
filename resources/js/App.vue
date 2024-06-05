@@ -10,7 +10,8 @@ export default {
 </script>
 <template>
     <div>
-        <button @click="count++">Count is : {{ count }}</button>
+        <h2>Hello world</h2>
+        <button @click="count++" class="btn">Count is : {{ count }}</button>
     </div>
 </template>
 
