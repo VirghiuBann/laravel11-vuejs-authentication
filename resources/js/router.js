@@ -7,7 +7,7 @@ import Register from "./pages/Register.vue";
 import NotFound from "./pages/ErrorPage.vue";
 
 const isAuthenticated = () => {
-    return false;
+    return true;
 };
 
 const routes = [
@@ -16,14 +16,7 @@ const routes = [
         name: "home",
         component: Dashboard,
         meta: { requiredAuth: true },
-        beforeEnter: (to, from) => {
-            console.log(to.name);
-            if (!isAuthenticated()) {
-                return {
-                    name: "layout",
-                };
-            }
-        },
+        meta: { requiresAuth: true },
     },
     { path: "/login", name: "login", component: Login },
     { path: "/register", name: "register", component: Register },
@@ -41,7 +34,16 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
-    console.log(to.name, from.name);
+    const requiredAuth = to.meta.requiresAuth;
+    const guestSet = new Set(["login", "register", "layout"]);
+
+    if (requiredAuth && !isAuthenticated()) {
+        return { name: "layout" };
+    } else if (guestSet.has(to.name)) {
+        return { name: "home" };
+    } else {
+        return true;
+    }
 });
 
 export { router };
