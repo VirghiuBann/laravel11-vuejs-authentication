@@ -24,7 +24,7 @@ const imageUrl = ref(
                     >Login</RouterLink
                 >
                 /
-                <RouterLink to="/login" class="link link-info"
+                <RouterLink to="/register" class="link link-info"
                     >Register</RouterLink
                 >
             </div>

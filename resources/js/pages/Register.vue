@@ -6,12 +6,20 @@
                 class="shadow-md bg-neutral rounded px-8 pt-6 pb-8 mb-4"
             >
                 <InputRaw
+                    label="name"
+                    id="name"
+                    type="name"
+                    placeholder="name"
+                    :required="true"
+                    v-model="name"
+                />
+                <InputRaw
                     label="email"
                     id="email"
                     type="email"
                     placeholder="test@gmail.com"
                     :required="true"
-                    v-model="username"
+                    v-model="email"
                 />
 
                 <InputRaw
@@ -28,10 +36,10 @@
                         class="btn hover:btn-neutral font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="submit"
                     >
-                        Login
+                        Register
                     </button>
-                    <RouterLink to="/register" class="link link-info"
-                        >Register</RouterLink
+                    <RouterLink to="/login" class="link link-info"
+                        >Login</RouterLink
                     >
                 </div>
             </form>
@@ -43,7 +51,8 @@
 import { ref } from "vue";
 import InputRaw from "../components/InputRaw.vue";
 
-const username = ref("");
+const name = ref("");
+const email = ref("");
 const password = ref("");
 
 const login = () => {
