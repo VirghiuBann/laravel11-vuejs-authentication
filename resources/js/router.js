@@ -7,7 +7,7 @@ import Register from "./pages/Register.vue";
 import NotFound from "./pages/ErrorPage.vue";
 
 const isAuthenticated = () => {
-    return true;
+    return false;
 };
 
 const routes = [
@@ -39,7 +39,7 @@ router.beforeEach(async (to, from) => {
 
     if (requiredAuth && !isAuthenticated()) {
         return { name: "layout" };
-    } else if (guestSet.has(to.name)) {
+    } else if (guestSet.has(to.name) && isAuthenticated()) {
         return { name: "home" };
     } else {
         return true;
