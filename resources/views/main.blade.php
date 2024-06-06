@@ -8,8 +8,6 @@
     <title>sanctum auth</title>
 </head>
 <body>
-    <main>
-        <div id="app"></div>
-    </main>
+    <div id="app"></div>
 </body>
 </html>

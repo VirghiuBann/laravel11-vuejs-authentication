@@ -1,17 +1,20 @@
 <script>
 import { ref } from "vue";
+import HomeLayout from "./components/HomeLayout.vue";
+
 export default {
+    components: { HomeLayout },
     setup() {
         return {
             count: ref(0),
+            isLogin: ref(false),
         };
     },
 };
 </script>
 <template>
     <div>
-        <h2>Hello world</h2>
-        <button @click="count++" class="btn">Count is : {{ count }}</button>
+        <RouterView />
     </div>
 </template>
 
