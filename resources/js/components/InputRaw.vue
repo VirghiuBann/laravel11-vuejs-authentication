@@ -1,11 +1,11 @@
 <template>
     <div class="mb-4">
-        <label class="block text-sm font-bold mb-2" :for="id">
+        <label class="block text-sm font-bold mb-2 capitalize" :for="id">
             {{ label }}
         </label>
         <input
             v-model="inputValue"
-            class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+            class="input shadow-md border rounded w-full py-2 px-3 focus:shadow-outline focus:outline-none"
             :id="id"
             :type="type"
             :placeholder="placeholder"
@@ -20,10 +20,6 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    // inputValue: {
-    //     type: null,
-    //     required: true,
-    // },
     id: {
         type: String,
         required: true,
