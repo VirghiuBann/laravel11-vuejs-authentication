@@ -11,7 +11,7 @@
                     type="email"
                     placeholder="test@gmail.com"
                     :required="true"
-                    v-model="username"
+                    v-model="email"
                 />
 
                 <InputRaw
@@ -43,11 +43,11 @@
 import { ref } from "vue";
 import InputRaw from "../components/InputRaw.vue";
 
-const username = ref("");
+const email = ref("");
 const password = ref("");
 
 const login = () => {
-    console.log("Username:", username.value);
+    console.log("email:", email.value);
     console.log("Password:", password.value);
 };
 </script>

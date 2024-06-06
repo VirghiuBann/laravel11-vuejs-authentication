@@ -2,7 +2,7 @@
     <div class="flex justify-center items-center h-screen">
         <div class="w-full max-w-xs">
             <form
-                @submit.prevent="login"
+                @submit.prevent="register"
                 class="shadow-md bg-neutral rounded px-8 pt-6 pb-8 mb-4"
             >
                 <InputRaw
@@ -55,9 +55,10 @@ const name = ref("");
 const email = ref("");
 const password = ref("");
 
-const login = () => {
-    console.log("Username:", username.value);
-    console.log("Password:", password.value);
+const register = () => {
+    console.log("name:", name.value);
+    console.log("email:", email.value);
+    console.log("password:", password.value);
 };
 </script>
 
