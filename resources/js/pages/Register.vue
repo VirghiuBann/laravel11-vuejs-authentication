@@ -11,7 +11,7 @@
                     type="name"
                     placeholder="name"
                     :required="true"
-                    v-model="name"
+                    v-model="user.name"
                 />
                 <InputRaw
                     label="email"
@@ -19,7 +19,7 @@
                     type="email"
                     placeholder="test@gmail.com"
                     :required="true"
-                    v-model="email"
+                    v-model="user.email"
                 />
 
                 <InputRaw
@@ -28,7 +28,19 @@
                     type="password"
                     placeholder="*********"
                     :required="true"
-                    v-model="password"
+                    v-model="user.password"
+                />
+                <InputRaw
+                    label="password confirmation"
+                    id="password_confirmation"
+                    type="password"
+                    placeholder="*********"
+                    :required="true"
+                    v-model="user.password_confirmation"
+                />
+                <InputErrors
+                    v-if="inputErrors.errors['password']"
+                    :errorMessage="inputErrors.errors['password'][0]"
                 />
 
                 <div class="flex items-center justify-between">
@@ -48,17 +60,39 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { reactive } from "vue";
 import InputRaw from "../components/InputRaw.vue";
+import InputErrors from "../components/InputErrors.vue";
 
-const name = ref("");
-const email = ref("");
-const password = ref("");
+import { customFetch } from "../utils/axios";
 
-const register = () => {
-    console.log("name:", name.value);
-    console.log("email:", email.value);
-    console.log("password:", password.value);
+const user = reactive({
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+});
+
+const inputErrors = reactive({
+    errors: [],
+});
+
+const register = async () => {
+    console.log("user:", user);
+
+    try {
+        await customFetch.get("/sanctum/csrf-cokkie");
+        const resp = await customFetch.post("/api/register", user);
+        console.log(resp);
+    } catch (error) {
+        console.log("Some error occurred ", error.response);
+        const errors = error.response?.data?.errors;
+        if (errors) {
+            inputErrors.errors = errors;
+            user.password = "";
+            user.password_confirmation = "";
+        }
+    }
 };
 </script>
 
