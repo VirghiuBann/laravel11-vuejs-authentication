@@ -11,7 +11,7 @@
                     type="email"
                     placeholder="test@gmail.com"
                     :required="true"
-                    v-model="email"
+                    v-model="credentials.email"
                 />
 
                 <InputRaw
@@ -20,13 +20,18 @@
                     type="password"
                     placeholder="*********"
                     :required="true"
-                    v-model="password"
+                    v-model="credentials.password"
+                />
+                <InputErrors
+                    v-if="inputErrors.errors['email']"
+                    :errorMessage="inputErrors.errors['email'][0]"
                 />
 
                 <div class="flex items-center justify-between">
                     <button
                         class="btn hover:btn-neutral font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="submit"
+                        :disabled="isLoading"
                     >
                         Login
                     </button>
@@ -40,15 +45,40 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import InputRaw from "../components/InputRaw.vue";
+import { customFetch } from "../utils/axios";
+import InputErrors from "../components/InputErrors.vue";
 
-const email = ref("");
-const password = ref("");
+const isLoading = ref(false);
+const credentials = reactive({
+    email: "",
+    password: "",
+});
 
-const login = () => {
-    console.log("email:", email.value);
-    console.log("Password:", password.value);
+const inputErrors = reactive({
+    errors: [],
+});
+
+const login = async () => {
+    console.log("email:", credentials);
+    isLoading.value = true;
+
+    try {
+        await customFetch.get("/sanctum/csrf-cokkie");
+        const resp = await customFetch.post("/login", credentials);
+        console.log(resp);
+    } catch (error) {
+        console.log("Some error occurred ", error.response);
+        const errors = error.response?.data?.errors;
+        if (errors) {
+            inputErrors.errors = errors;
+            credentials.email = "";
+            credentials.password = "";
+        }
+    } finally {
+        isLoading.value = false;
+    }
 };
 </script>
 
