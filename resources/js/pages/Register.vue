@@ -21,6 +21,10 @@
                     :required="true"
                     v-model="user.email"
                 />
+                <InputErrors
+                    v-if="inputErrors.errors['email']"
+                    :errorMessage="inputErrors.errors['email'][0]"
+                />
 
                 <InputRaw
                     label="password"
@@ -30,6 +34,7 @@
                     :required="true"
                     v-model="user.password"
                 />
+
                 <InputRaw
                     label="password confirmation"
                     id="password_confirmation"
@@ -47,6 +52,7 @@
                     <button
                         class="btn hover:btn-neutral font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="submit"
+                        :disabled="isLoading"
                     >
                         Register
                     </button>
@@ -60,7 +66,7 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import InputRaw from "../components/InputRaw.vue";
 import InputErrors from "../components/InputErrors.vue";
 
@@ -73,16 +79,19 @@ const user = reactive({
     password_confirmation: "",
 });
 
+const isLoading = ref(false);
+
 const inputErrors = reactive({
     errors: [],
 });
 
 const register = async () => {
     console.log("user:", user);
+    isLoading.value = true;
 
     try {
         await customFetch.get("/sanctum/csrf-cokkie");
-        const resp = await customFetch.post("/api/register", user);
+        const resp = await customFetch.post("/register", user);
         console.log(resp);
     } catch (error) {
         console.log("Some error occurred ", error.response);
@@ -92,6 +101,8 @@ const register = async () => {
             user.password = "";
             user.password_confirmation = "";
         }
+    } finally {
+        isLoading.value = false;
     }
 };
 </script>
