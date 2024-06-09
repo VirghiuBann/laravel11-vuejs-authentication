@@ -46,8 +46,10 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import InputRaw from "../components/InputRaw.vue";
 import { customFetch } from "../utils/axios";
+import { useAuthStore } from "@/stores";
+
+import InputRaw from "../components/InputRaw.vue";
 import InputErrors from "../components/InputErrors.vue";
 
 const isLoading = ref(false);
