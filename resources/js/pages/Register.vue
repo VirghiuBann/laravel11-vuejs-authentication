@@ -67,10 +67,15 @@
 
 <script setup>
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 import InputRaw from "../components/InputRaw.vue";
 import InputErrors from "../components/InputErrors.vue";
 
 import { customFetch } from "../utils/axios";
+import { useAuthStore } from "../stores/auth";
+
+const store = useAuthStore();
+const router = useRouter();
 
 const user = reactive({
     name: "",
@@ -86,20 +91,26 @@ const inputErrors = reactive({
 });
 
 const register = async () => {
-    console.log("user:", user);
     isLoading.value = true;
-
+    console.log(user);
     try {
         await customFetch.get("/sanctum/csrf-cokkie");
         const resp = await customFetch.post("/register", user);
         console.log(resp);
+        const { user: user_auth, isAuth: is_auth } = resp.data;
+        store.setLogin({ user: user_auth, is_auth });
+        router.push({ name: "home" });
     } catch (error) {
+        console.log(error);
         console.log("Some error occurred ", error.response);
         const errors = error.response?.data?.errors;
         if (errors) {
             inputErrors.errors = errors;
             user.password = "";
             user.password_confirmation = "";
+        }
+        if (error.status >= 500) {
+            console.log(error.statusText);
         }
     } finally {
         isLoading.value = false;

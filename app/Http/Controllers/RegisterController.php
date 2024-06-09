@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Auth;
 
-class RegisterController extends Controller
+class RegisterController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'guest'
+        ];
+    }
+
     public function register(RegisterRequest $request)
     {
 
@@ -19,29 +28,14 @@ class RegisterController extends Controller
             'password' => bcrypt($validateData['password']),
         ]);
 
-        return response()->json([
-            'user' => $newUser->only(['id', 'name', 'email']),
-        ]);
-    }
+        Auth::login($newUser);
 
-    public function login(Request $request)
-    {
-        return response()->json([
-            'message' => 'login'
-        ]);
-    }
+        $user = Auth::user()->only(['id', 'email', 'name']);
 
-    public function logout(Request $request)
-    {
-        return response()->json([
-            'message' => 'logout'
-        ]);
-    }
-
-    public function getUser(Request $request)
-    {
-        return response()->json([
-            'message' => 'getUser'
-        ]);
+        return response()
+            ->json([
+                'user' => $user,
+                'isAuth' => true
+            ]);
     }
 }

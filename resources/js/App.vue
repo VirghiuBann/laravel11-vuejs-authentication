@@ -20,7 +20,7 @@ const getUserAuth = async () => {
         store.setLogin({ user, is_auth });
         router.push({ name: "home" });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         router.push({ name: "layout" });
     } finally {
         isLoading.value = false;
