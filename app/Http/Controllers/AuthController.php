@@ -24,6 +24,21 @@ class AuthController extends Controller
 
         $user = Auth::user()->only(['id', 'email', 'name']);
 
-        return response()->json(['user' => $user]);
+        return response()
+            ->json([
+                'user' => $user,
+                'isAuth' => true
+            ]);
+    }
+
+
+    function getUser()
+    {
+        $user = Auth::user()->only(['id', 'email', 'name']);
+        return response()
+            ->json([
+                'user' => $user,
+                'isAuth' => true
+            ]);
     }
 }

@@ -6,8 +6,11 @@ import Layout from "./pages/Layout.vue";
 import Register from "./pages/Register.vue";
 import NotFound from "./pages/ErrorPage.vue";
 
+import { useAuthStore } from "./stores/auth";
+
 const isAuthenticated = () => {
-    return false;
+    const store = useAuthStore();
+    return store.isAuth;
 };
 
 const routes = [
@@ -15,7 +18,6 @@ const routes = [
         path: "/",
         name: "home",
         component: Dashboard,
-        meta: { requiredAuth: true },
         meta: { requiresAuth: true },
     },
     { path: "/login", name: "login", component: Login },

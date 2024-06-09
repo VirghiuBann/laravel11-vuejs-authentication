@@ -6,12 +6,12 @@ export const useAuthStore = defineStore("auth", {
         user: null,
     }),
     getters: {
-        isAuth: (state) => state.auth && state.user,
+        isAuth: (state) => state.auth && !!state.user,
         getUser: (state) => state.user,
     },
     actions: {
-        setLogin({ auth, user }) {
-            this.auth = auth;
+        setLogin({ user, is_auth }) {
+            this.auth = is_auth;
             this.user = user;
         },
         logout() {
