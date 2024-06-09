@@ -1,8 +1,22 @@
 <script setup>
 import { useAuthStore } from "@/stores";
+import { customFetch } from "../utils/axios";
+import { useRouter } from "vue-router";
 
 const store = useAuthStore();
 const user = store.getUser;
+const router = useRouter();
+
+const logout = async () => {
+    try {
+        const resp = await customFetch.post("/logout");
+        console.log(resp);
+        store.logout();
+        router.push({ name: "layout" });
+    } catch (error) {
+        console.log(error);
+    }
+};
 </script>
 <template>
     <div class="navbar bg-base-100">
@@ -77,7 +91,7 @@ const user = store.getUser;
                         </a>
                     </li>
                     <li><a>Settings</a></li>
-                    <li><a>Logout</a></li>
+                    <li><a @click="logout">Logout</a></li>
                 </ul>
             </div>
         </div>
