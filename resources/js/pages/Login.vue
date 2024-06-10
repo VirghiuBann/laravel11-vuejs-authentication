@@ -26,6 +26,10 @@
                     v-if="inputErrors.errors['email']"
                     :errorMessage="inputErrors.errors['email'][0]"
                 />
+                <InputErrors
+                    v-if="inputErrors.errors['throttle']"
+                    :errorMessage="inputErrors.errors['throttle'][0]"
+                />
 
                 <div class="flex items-center justify-between">
                     <button
