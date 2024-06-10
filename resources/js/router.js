@@ -30,18 +30,25 @@ const router = createRouter({
     routes,
 });
 
-const isAuthenticated = () => {
-    const store = useAuthStore();
-    return store.isAuth;
-};
-
 router.beforeEach(async (to, from) => {
+    const store = useAuthStore();
+
     const requiresAuth = to.meta.requiresAuth;
     const guestSet = new Set(["login", "register", "layout"]);
 
-    if (requiresAuth && !isAuthenticated()) {
+    if (!store.isAuth) {
+        try {
+            await store.getAuthUser();
+        } catch (error) {
+            if (error?.response?.status === 401) {
+                console.log("Unauthorized!");
+            }
+        }
+    }
+
+    if (requiresAuth && !store.isAuth) {
         return { name: "layout" };
-    } else if (guestSet.has(to.name) && isAuthenticated()) {
+    } else if (guestSet.has(to.name) && store.isAuth) {
         return { name: "home" };
     } else {
         return true;

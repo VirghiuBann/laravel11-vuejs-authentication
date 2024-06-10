@@ -32,6 +32,13 @@ export const useAuthStore = defineStore("auth", {
             router.push({ name: "home" });
         },
 
+        async getAuthUser() {
+            const resp = await customFetch.get("/api/user");
+
+            const { user, isAuth } = resp.data;
+            this.setLogin({ user, isAuth });
+        },
+
         async logout() {
             try {
                 await customFetch.post("/logout");

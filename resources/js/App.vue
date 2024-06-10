@@ -1,34 +1,6 @@
-<script setup>
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
-import { customFetch } from "./utils/axios";
-import { useAuthStore } from "@/stores/auth";
-
-const isLoading = ref(false);
-onMounted(() => {
-    getUserAuth();
-});
-
-const getUserAuth = async () => {
-    isLoading.value = true;
-    const store = useAuthStore();
-    const router = useRouter();
-    try {
-        const resp = await customFetch.get("/api/user");
-
-        const { user, isAuth } = resp.data;
-        store.setLogin({ user, isAuth });
-        router.push({ name: "home" });
-    } catch (error) {
-        // console.log(error);
-        router.push({ name: "layout" });
-    } finally {
-        isLoading.value = false;
-    }
-};
-</script>
+<script setup></script>
 <template>
-    <div v-if="!isLoading">
+    <div>
         <RouterView />
     </div>
 </template>
