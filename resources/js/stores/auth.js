@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { router } from "../router";
 import { customFetch } from "./../utils/axios";
 
 export const useAuthStore = defineStore("auth", {
@@ -14,7 +15,6 @@ export const useAuthStore = defineStore("auth", {
         async login(credentials) {
             await customFetch.get("/sanctum/csrf-cokkie");
             const resp = await customFetch.post("/login", credentials);
-            console.log(resp);
             const { user, isAuth } = resp.data;
             this.setLogin({ user, isAuth });
         },
@@ -23,9 +23,16 @@ export const useAuthStore = defineStore("auth", {
             this.auth = isAuth;
             this.user = user;
         },
-        logout() {
-            this.auth = false;
-            this.user = null;
+        async logout() {
+            try {
+                await customFetch.post("/logout");
+
+                router.push({ name: "layout" });
+                this.auth = false;
+                this.user = null;
+            } catch (error) {
+                console.log(error);
+            }
         },
     },
 });

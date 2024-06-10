@@ -1,21 +1,11 @@
 <script setup>
 import { useAuthStore } from "@/stores";
-import { customFetch } from "../utils/axios";
-import { useRouter } from "vue-router";
 
 const store = useAuthStore();
 const user = store.getUser;
-const router = useRouter();
 
 const logout = async () => {
-    try {
-        const resp = await customFetch.post("/logout");
-        console.log(resp);
-        store.logout();
-        router.push({ name: "layout" });
-    } catch (error) {
-        console.log(error);
-    }
+    await store.logout();
 };
 </script>
 <template>
