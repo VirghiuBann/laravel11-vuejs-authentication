@@ -23,6 +23,15 @@ export const useAuthStore = defineStore("auth", {
             this.auth = isAuth;
             this.user = user;
         },
+
+        async register(credentials) {
+            await customFetch.get("/sanctum/csrf-cokkie");
+            const resp = await customFetch.post("/register", credentials);
+            const { user, isAuth } = resp.data;
+            this.setLogin({ user, isAuth });
+            router.push({ name: "home" });
+        },
+
         async logout() {
             try {
                 await customFetch.post("/logout");
