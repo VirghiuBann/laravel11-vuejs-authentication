@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-center items-center h-screen">
-        <div class="w-full max-w-xs">
+        <div class="w-full max-w-md">
             <form
                 @submit.prevent="register"
                 class="shadow-md bg-neutral rounded px-8 pt-6 pb-8 mb-4"
