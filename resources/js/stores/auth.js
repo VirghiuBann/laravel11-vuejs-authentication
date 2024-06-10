@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { customFetch } from "./../utils/axios";
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
@@ -10,8 +11,16 @@ export const useAuthStore = defineStore("auth", {
         getUser: (state) => state.user,
     },
     actions: {
-        setLogin({ user, is_auth }) {
-            this.auth = is_auth;
+        async login(credentials) {
+            await customFetch.get("/sanctum/csrf-cokkie");
+            const resp = await customFetch.post("/login", credentials);
+            console.log(resp);
+            const { user, isAuth } = resp.data;
+            this.setLogin({ user, isAuth });
+        },
+
+        setLogin({ user, isAuth }) {
+            this.auth = isAuth;
             this.user = user;
         },
         logout() {

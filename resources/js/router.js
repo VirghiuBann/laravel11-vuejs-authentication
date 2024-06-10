@@ -8,11 +8,6 @@ import NotFound from "./pages/ErrorPage.vue";
 
 import { useAuthStore } from "./stores/auth";
 
-const isAuthenticated = () => {
-    const store = useAuthStore();
-    return store.isAuth;
-};
-
 const routes = [
     {
         path: "/",
@@ -35,11 +30,16 @@ const router = createRouter({
     routes,
 });
 
+const isAuthenticated = () => {
+    const store = useAuthStore();
+    return store.isAuth;
+};
+
 router.beforeEach(async (to, from) => {
-    const requiredAuth = to.meta.requiresAuth;
+    const requiresAuth = to.meta.requiresAuth;
     const guestSet = new Set(["login", "register", "layout"]);
 
-    if (requiredAuth && !isAuthenticated()) {
+    if (requiresAuth && !isAuthenticated()) {
         return { name: "layout" };
     } else if (guestSet.has(to.name) && isAuthenticated()) {
         return { name: "home" };

@@ -16,8 +16,8 @@ const getUserAuth = async () => {
     try {
         const resp = await customFetch.get("/api/user");
 
-        const { user, isAuth: is_auth } = resp.data;
-        store.setLogin({ user, is_auth });
+        const { user, isAuth } = resp.data;
+        store.setLogin({ user, isAuth });
         router.push({ name: "home" });
     } catch (error) {
         // console.log(error);
